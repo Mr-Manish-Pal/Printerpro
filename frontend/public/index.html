@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AutoPrint - Self Service Print Kiosk</title>
+  <link rel="stylesheet" href="/css/kiosk.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Top Navigation / Header -->
+  <header class="kiosk-header">
+    <div class="header-content">
+      <div class="brand">
+        <div class="brand-icon">🖨️</div>
+        <div>
+          <h1 class="brand-title">AutoPrint</h1>
+          <p class="brand-subtitle">Smart Self-Service Kiosk</p>
+        </div>
+      </div>
+      <div class="kiosk-status">
+        <span class="status-indicator online"></span>
+        <span class="status-text">Kiosk Ready</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Live Rate Card Banner -->
+  <div class="rate-banner-wrapper">
+    <div class="rate-banner" id="rateBanner">
+      <div class="rate-pill">B/W: <strong id="rateBw">₹2.00</strong>/page</div>
+      <div class="rate-pill">Color: <strong id="rateColor">₹10.00</strong>/page</div>
+      <div class="rate-pill highlight">Duplex Save: <strong id="rateDuplex">₹0.50</strong>/sheet</div>
+    </div>
+  </div>
+
+  <main class="kiosk-container">
+
+    <!-- Upload Section -->
+    <section class="card upload-card" id="uploadSection">
+      <div class="dropzone" id="dropzone">
+        <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png,.txt" class="file-input-hidden">
+        <div class="dropzone-content">
+          <div class="upload-icon-circle">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          <h2 class="dropzone-title">Tap to Upload Documents</h2>
+          <p class="dropzone-desc">Select PDF, Word, PPT, Excel, Images or Text</p>
+          <div class="format-badges">
+            <span class="badge">PDF</span>
+            <span class="badge">DOCX</span>
+            <span class="badge">PPTX</span>
+            <span class="badge">JPG / PNG</span>
+          </div>
+          <button type="button" class="btn btn-primary btn-select" id="browseBtn">Browse Files</button>
+        </div>
+      </div>
+
+      <!-- Upload Progress Indicator -->
+      <div class="upload-progress-container hidden" id="uploadProgressContainer">
+        <div class="progress-info">
+          <span id="uploadProgressText">Processing files & counting pages...</span>
+          <span id="uploadProgressPercent">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-bar" id="uploadProgressBar"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Uploaded Documents & Options List -->
+    <section class="files-section hidden" id="filesSection">
+      <div class="section-header">
+        <h2 class="section-title">Configure Print Settings</h2>
+        <span class="file-count-badge" id="fileCountBadge">0 Files</span>
+      </div>
+
+      <div class="file-cards-list" id="fileCardsList">
+        <!-- Rendered dynamically by kiosk.js -->
+      </div>
+
+      <button type="button" class="btn btn-secondary btn-add-more" id="addMoreBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        Add More Documents
+      </button>
+    </section>
+
+    <!-- Pricing Summary Card -->
+    <section class="card summary-card hidden" id="summarySection">
+      <h3 class="summary-title">Cost Summary</h3>
+      
+      <div class="summary-line">
+        <span>Subtotal</span>
+        <span id="summarySubtotal">₹0.00</span>
+      </div>
+
+      <div class="summary-line hidden" id="serviceChargeRow">
+        <span>Service Charge</span>
+        <span id="summaryServiceCharge">₹0.00</span>
+      </div>
+
+      <div class="summary-line hidden" id="minAdjustmentRow">
+        <span>Min Order Adjustment</span>
+        <span id="summaryMinAdjustment">₹0.00</span>
+      </div>
+
+      <div class="summary-divider"></div>
+
+      <div class="summary-line total-line">
+        <span>Total Payable</span>
+        <span class="total-amount" id="summaryTotal">₹0.00</span>
+      </div>
+
+      <p class="summary-guarantee">🛡️ Rates are calculated server-side. Pay securely via UPI.</p>
+    </section>
+
+  </main>
+
+  <!-- Sticky Bottom Checkout Bar (Mobile & Desktop) -->
+  <div class="checkout-bar hidden" id="checkoutBar">
+    <div class="checkout-bar-content">
+      <div class="checkout-price-info">
+        <span class="checkout-label">Total Amount</span>
+        <span class="checkout-total" id="barTotal">₹0.00</span>
+      </div>
+      <button type="button" class="btn btn-checkout" id="proceedPayBtn">
+        <span>Pay with UPI</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div class="toast hidden" id="toast"></div>
+
+  <script src="/js/kiosk.js"></script>
+</body>
+</html>
+

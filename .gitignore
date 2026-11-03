@@ -1,0 +1,13 @@
+node_modules/
+.env
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+backend/storage/uploads/*
+!backend/storage/uploads/.gitkeep
+backend/storage/converted/*
+!backend/storage/converted/.gitkeep
+.DS_Store
+*.log
+
